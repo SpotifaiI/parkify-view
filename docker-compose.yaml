@@ -1,0 +1,12 @@
+services:
+  parkify_view:
+    image: node:20-alpine
+    container_name: parkify_view
+    ports:
+      - ${APP_PORT}:5173
+    working_dir: /app
+    volumes:
+      - ./:/app
+    env_file: .env
+    command: sh -c "yarn && yarn dev --host"
+    tty: true
