@@ -1,7 +1,5 @@
+import { Dashboard } from './screens/Dashboard';
+
 export function App() {
-  return (
-    <>
-      <h1>Parkify</h1>
-    </>
-  )
+  return <Dashboard />;
 }
