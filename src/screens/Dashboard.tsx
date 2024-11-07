@@ -31,13 +31,13 @@ export function Dashboard() {
 
   return (
     <main id="dashboard-screen">
-      <h1 className="main-title h1">Dashboard</h1>
       <section id="main-values__section">
         <div className="nearest-role__section">
           <section>Vagas Mais Próxima</section>
           <p id="nearest-role">P4</p>
         </div>
         <div className="other_roles__section">
+          <h2>Outras vagas</h2>
           <section className="other-roles">G4</section>
           <section className="other-roles">E7</section>
         </div>
