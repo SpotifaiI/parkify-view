@@ -1,46 +1,61 @@
-import { io } from "socket.io-client";
-
-export type WSRefresh = { ok: boolean };
+import { useEffect, useState } from "react";
+import {
+  onRefreshListener,
+  testWebSocketConnection,
+  triggerHttpRefresh,
+  WSRefresh,
+} from "../api/socket";
 
 export function Dashboard() {
-  const socket = io(import.meta.env.VITE_WS_ENDPOINT);
+  const [nearestRole, setNearestRole] = useState<string>("P4");
+  const [otherRoles, setOtherRoles] = useState<string[]>(["G4", "E7"]);
 
-  socket.on("connect", () => {
-    console.log(`Conectado por WS com ID ${socket.id}`);
-  });
+  useEffect(() => {
+    const removeListener = onRefreshListener((data: WSRefresh) => {
+      console.log("Dados recebidos do WebSocket:", data);
 
-  socket.on("connect", () => {
-    console.log(`Desconectado de WS!`);
-  });
+      if (data.ok) {
+        setNearestRole(data.nearestRole || "N/A");
+        setOtherRoles(data.otherRoles || []);
+      }
+    });
 
-  socket.on("test-connection", () => {
-    console.log("WebSocket realmente funciona!");
-  });
+    return () => {
+      removeListener();
+    };
+  }, []);
 
-  socket.on("refresh", (data: WSRefresh) => {
-    console.log("Atualizando a página...");
-    console.log(data);
-    console.log(data.ok);
-  });
+  function handleTestWS() {
+    testWebSocketConnection();
+  }
 
-  function onWSHandler() {
-    socket.emit("test-connection");
+  async function handleHttpRefresh() {
+    try {
+      const data = await triggerHttpRefresh();
+      console.log("Resposta do /refresh (HTTP):", data);
+    } catch (error) {
+      console.error("Erro ao testar /refresh (HTTP):", error);
+    }
   }
 
   return (
     <main id="dashboard-screen">
       <section id="main-values__section">
         <div className="nearest-role__section">
-          <section>Vagas Mais Próxima</section>
-          <p id="nearest-role">P4</p>
+          <section>Vaga Mais Próxima</section>
+          <p id="nearest-role">{nearestRole}</p>
         </div>
         <div className="other_roles__section">
           <h2>Outras vagas</h2>
-          <section className="other-roles">G4</section>
-          <section className="other-roles">E7</section>
+          {otherRoles.map((role, index) => (
+            <section key={index} className="other-roles">
+              {role}
+            </section>
+          ))}
         </div>
       </section>
-      <button onClick={onWSHandler}>Testar WebSocket</button>
+      <button onClick={handleTestWS}>Testar WebSocket</button>
+      <button onClick={handleHttpRefresh}>Testar /refresh (HTTP)</button>
     </main>
   );
 }
