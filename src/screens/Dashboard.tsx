@@ -1,8 +1,6 @@
 import { io } from "socket.io-client";
 
-export type WSRefresh = {
-  ok: boolean;
-};
+export type WSRefresh = { ok: boolean };
 
 export function Dashboard() {
   const socket = io(import.meta.env.VITE_WS_ENDPOINT);

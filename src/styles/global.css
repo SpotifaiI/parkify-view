@@ -27,7 +27,7 @@ body {
   overflow: hidden;
 }
 
-main#dashboard-screen {
+#dashboard-screen {
   width: 100vw;
   height: 100vh;
   display: flex;
