@@ -1,4 +1,4 @@
-import { Dashboard } from './screens/Dashboard';
+import { Dashboard } from "./screens/Dashboard";
 
 export function App() {
   return <Dashboard />;
