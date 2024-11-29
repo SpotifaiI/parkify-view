@@ -1,9 +1,14 @@
-import { io } from "socket.io-client";
+import { io } from 'socket.io-client';
+import { useState } from 'react';
 
-export type WSRefresh = { ok: boolean };
+export type WSRefresh = { nearFreeSlot: string };
 
 export function Dashboard() {
   const socket = io(import.meta.env.VITE_WS_ENDPOINT);
+
+  const defaultParkingSlot = 'N/D';
+  const [lastParkingSlot, setLastParkingSlot] = useState(defaultParkingSlot);
+  const [previousLastParkingSlot, setPreviousLastParkingSlot] = useState('');
 
   socket.on("connect", () => {
     console.log(`Conectado por WS com ID ${socket.id}`);
@@ -18,9 +23,15 @@ export function Dashboard() {
   });
 
   socket.on("refresh", (data: WSRefresh) => {
-    console.log("Atualizando a página...");
-    console.log(data);
-    console.log(data.ok);
+    console.log('recebendo dados...', data);
+
+    if (!data.nearFreeSlot) return;
+
+    if (lastParkingSlot !== defaultParkingSlot) {
+      setPreviousLastParkingSlot(lastParkingSlot);
+    }
+
+    setLastParkingSlot(data.nearFreeSlot);
   });
 
   function onWSHandler() {
@@ -36,8 +47,8 @@ export function Dashboard() {
         </div>
         <div className="other_roles__section">
           <h2>Outras vagas</h2>
-          <section className="other-roles">G4</section>
-          <section className="other-roles">E7</section>
+          <section className="other-roles">{lastParkingSlot}</section>
+          <section className="other-roles">{previousLastParkingSlot}</section>
         </div>
       </section>
       <button onClick={onWSHandler}>Testar WebSocket</button>
