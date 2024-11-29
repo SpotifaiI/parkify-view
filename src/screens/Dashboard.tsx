@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 import { useState } from 'react';
 
-export type WSRefresh = { near_free_slot: string };
+export type WSRefresh = { nearFreeSlot: string };
 
 export function Dashboard() {
   const socket = io(import.meta.env.VITE_WS_ENDPOINT);
@@ -23,11 +23,15 @@ export function Dashboard() {
   });
 
   socket.on("refresh", (data: WSRefresh) => {
+    console.log('recebendo dados...', data);
+
+    if (!data.nearFreeSlot) return;
+
     if (lastParkingSlot !== defaultParkingSlot) {
       setPreviousLastParkingSlot(lastParkingSlot);
     }
 
-    setLastParkingSlot(data.near_free_slot);
+    setLastParkingSlot(data.nearFreeSlot);
   });
 
   function onWSHandler() {
