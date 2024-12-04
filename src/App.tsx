@@ -1,5 +1,6 @@
-import { Dashboard } from "./screens/Dashboard";
+import { Home } from './screens/Home';
+import './styles/global.css';
 
 export function App() {
-  return <Dashboard />;
+  return <Home />;
 }

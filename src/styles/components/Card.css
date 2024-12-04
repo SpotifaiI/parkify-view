@@ -1,0 +1,31 @@
+.card-component {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-card-background);
+  backdrop-filter: blur(1.2rem);
+  border-radius: .8rem;
+  min-height: 24rem;
+}
+
+.card-component span:nth-child(1) {
+  font-size: 2.4rem;
+  line-height: 3.2rem;
+  margin-bottom: 1.6rem;
+  color: var(--color-card-content);
+}
+
+.card-component span:nth-child(2) {
+  font-size: 5.6rem;
+  line-height: 6.4rem;
+  font-weight: 700;
+  color: var(--color-card-heading);
+}
+
+.card-component span:nth-child(3) {
+  font-size: 3.2rem;
+  line-height: 4.8rem;
+  color: var(--color-card-heading);
+}

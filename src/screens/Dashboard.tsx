@@ -1,5 +1,7 @@
-import { io } from 'socket.io-client';
 import { useState } from 'react';
+import { io } from 'socket.io-client';
+
+import "../styles/screens/Dashboard.css";
 
 export type WSRefresh = { nearFreeSlot: string };
 
